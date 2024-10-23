@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 	"time"
 )
 
@@ -24,31 +23,29 @@ func main() {
 	srcFolder := os.Getenv("RESOURCES_FOLDER")
 
 	cli := httpclient.NewClient()
-	svc := services.NewService(cli)
+	listCourses := services.NewListCoursesService(cli)
+	getCourse := services.NewGetCourseService(cli)
+	savePdf := services.NewSavePdfService(cli)
+
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	courses, err := svc.ListCourses()
+	courses, err := listCourses.Execute()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, course := range courses.Data.Courses {
-		cInfo, err := svc.GetCourseByID(course.Id)
+		cInfo, err := getCourse.Execute(course.Id)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		for i, class := range cInfo.Data.Classes {
-			filename := filepath.Join(cwd, srcFolder, cInfo.Data.Name, class.Name) + ".pdf"
-
-			if _, err := os.Stat(filename); err == nil {
-				filename = filepath.Join(cwd, srcFolder, cInfo.Data.Name, class.Name+"("+strconv.Itoa(i)+")") + ".pdf"
-			}
-
-			go svc.SavePDF(class.Pdf, filename)
+		for _, class := range cInfo.Data.Classes {
+			filename := filepath.Join(cwd, srcFolder, cInfo.Data.Name, class.Name+"_"+time.Now().String()) + ".pdf"
+			go savePdf.Execute(class.Pdf, filename)
 		}
 
 		time.Sleep(60 * time.Second)

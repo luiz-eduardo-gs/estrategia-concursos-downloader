@@ -1,58 +1,23 @@
 package services
 
 import (
-	"encoding/json"
-	"github.com/luiz-eduardo-gs/estrategia-concursos-scraper/internal/dtos"
 	httpclient "github.com/luiz-eduardo-gs/estrategia-concursos-scraper/pkg/clients/http"
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 )
 
-type Service struct {
+type SavePdf struct {
 	adapter httpclient.Client
 }
 
-func NewService(adapter httpclient.Client) *Service {
-	return &Service{
+func NewSavePdfService(adapter httpclient.Client) *SavePdf {
+	return &SavePdf{
 		adapter: adapter,
 	}
 }
 
-func (s *Service) ListCourses() (*dtos.CoursesResponse, error) {
-	courses := &dtos.CoursesResponse{}
-
-	bytes, _, err := s.adapter.Get(os.Getenv("COURSES_URL"))
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(bytes, courses)
-	if err != nil {
-		return nil, err
-	}
-
-	return courses, nil
-}
-
-func (s *Service) GetCourseByID(id int) (*dtos.Course, error) {
-	course := &dtos.Course{}
-
-	bytes, _, err := s.adapter.Get(os.Getenv("COURSE_URL") + strconv.Itoa(id))
-	if err != nil {
-		return nil, err
-	}
-
-	err = json.Unmarshal(bytes, course)
-	if err != nil {
-		return nil, err
-	}
-
-	return course, nil
-}
-
-func (s *Service) SavePDF(url string, out string) {
+func (s *SavePdf) Execute(url string, out string) {
 	bytes, _, err := s.adapter.Get(url)
 
 	log.Printf("Downloading file: %s", out)
