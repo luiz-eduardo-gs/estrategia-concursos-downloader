@@ -1,7 +1,7 @@
 package services
 
 import (
-	httpclient "github.com/luiz-eduardo-gs/estrategia-concursos-scraper/pkg/clients/http"
+	httpclient "github.com/luiz-eduardo-gs/estrategia-concursos-downloader/pkg/clients/http"
 	"log"
 	"os"
 	"path/filepath"

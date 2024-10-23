@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/joho/godotenv"
-	"github.com/luiz-eduardo-gs/estrategia-concursos-scraper/internal/services"
-	httpclient "github.com/luiz-eduardo-gs/estrategia-concursos-scraper/pkg/clients/http"
+	"github.com/luiz-eduardo-gs/estrategia-concursos-downloader/internal/services"
+	httpclient "github.com/luiz-eduardo-gs/estrategia-concursos-downloader/pkg/clients/http"
 	"log"
 	"os"
 	"path/filepath"

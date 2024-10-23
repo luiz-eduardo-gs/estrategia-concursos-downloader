@@ -1,4 +1,4 @@
-module github.com/luiz-eduardo-gs/estrategia-concursos-scraper
+module github.com/luiz-eduardo-gs/estrategia-concursos-downloader
 
 go 1.23.2
 

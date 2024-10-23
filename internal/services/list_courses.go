@@ -2,8 +2,8 @@ package services
 
 import (
 	"encoding/json"
-	"github.com/luiz-eduardo-gs/estrategia-concursos-scraper/internal/dtos"
-	httpclient "github.com/luiz-eduardo-gs/estrategia-concursos-scraper/pkg/clients/http"
+	"github.com/luiz-eduardo-gs/estrategia-concursos-downloader/internal/dtos"
+	httpclient "github.com/luiz-eduardo-gs/estrategia-concursos-downloader/pkg/clients/http"
 	"os"
 )
 

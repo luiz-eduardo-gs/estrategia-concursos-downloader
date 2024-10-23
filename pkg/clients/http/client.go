@@ -7,7 +7,7 @@ import (
 )
 
 type Client interface {
-	Get(url string) ([]byte, int, error)
+	Get(url string) (data []byte, status int, err error)
 }
 
 type Adapter struct {
