@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 )
 
@@ -21,7 +22,6 @@ func main() {
 	loadEnv()
 
 	srcFolder := os.Getenv("RESOURCES_FOLDER")
-
 	cli := httpclient.NewClient()
 	listCourses := services.NewListCoursesService(cli)
 	getCourse := services.NewGetCourseService(cli)
@@ -44,10 +44,10 @@ func main() {
 		}
 
 		for _, class := range cInfo.Data.Classes {
-			filename := filepath.Join(cwd, srcFolder, cInfo.Data.Name, class.Name+"_"+time.Now().String()) + ".pdf"
+			filename := filepath.Join(cwd, srcFolder, cInfo.Data.Name, class.Name+"_"+strconv.FormatInt(time.Now().UnixNano(), 10)) + ".pdf"
 			go savePdf.Execute(class.Pdf, filename)
 		}
 
-		time.Sleep(60 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
