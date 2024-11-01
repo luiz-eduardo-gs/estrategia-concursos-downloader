@@ -23,29 +23,29 @@ func main() {
 
 	srcFolder := os.Getenv("RESOURCES_FOLDER")
 	cli := httpclient.NewClient()
-	listCourses := services.NewListCoursesService(cli)
-	getCourse := services.NewGetCourseService(cli)
-	savePdf := services.NewSavePdfService(cli)
+	listCoursesSvc := services.NewListCoursesService(cli)
+	getCourseSvc := services.NewGetCourseService(cli)
+	savePdfSvc := services.NewSavePdfService(cli)
 
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	courses, err := listCourses.Execute()
+	courses, err := listCoursesSvc.Execute()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, course := range courses.Data.Courses {
-		cInfo, err := getCourse.Execute(course.Id)
+		cInfo, err := getCourseSvc.Execute(course.Id)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		for _, class := range cInfo.Data.Classes {
 			filename := filepath.Join(cwd, srcFolder, cInfo.Data.Name, class.Name+"_"+strconv.FormatInt(time.Now().UnixNano(), 10)) + ".pdf"
-			go savePdf.Execute(class.Pdf, filename)
+			go savePdfSvc.Execute(class.Pdf, filename)
 		}
 
 		time.Sleep(10 * time.Second)

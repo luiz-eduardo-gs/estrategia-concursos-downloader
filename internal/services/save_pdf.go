@@ -19,8 +19,11 @@ func NewSavePdfService(adapter httpclient.Client) *SavePdf {
 
 func (s *SavePdf) Execute(url string, out string) {
 	bytes, _, err := s.adapter.Get(url)
+	if err != nil {
+		log.Fatalf("Error trying to download pdf: %s", err.Error())
+	}
 
-	log.Printf("Downloading file: %s", out)
+	log.Printf("Saving pdf into: %s", out)
 
 	err = saveFile(out, bytes)
 	if err != nil {
